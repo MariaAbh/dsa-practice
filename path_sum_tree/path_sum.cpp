@@ -2,16 +2,16 @@
 #include <vector>
 using namespace std;
 
-struct Node {
-	int value;
-	Node* left;
-	Node* right;
-};
 
 class TreeNode {
 	private:
+		struct Node {
+			int value;
+			Node* left;
+			Node* right;
+		};
 		Node* root = NULL;
-		vector<vector<int>> final_path;
+		/* vector<vector<int>> final_path; */
 	public:
 		void print() {
 			Node* current = root;
@@ -61,29 +61,27 @@ class TreeNode {
 
 		}
 
-		void path_sum (Node* t, int k, vector<int> vec) {
+		vector<vector<int>>* path_sum (Node* t, int k, vector<int> vec, vector<vector<int>>* final_path) {
 			if (t == NULL) {
-				return;
+				return {};
 			}
 			int my_value = t->value;
-			if (my_value <= k) {
-				vec.push_back(my_value);
-				if (t->left == NULL && t->right == NULL && k-my_value == 0) {
-					final_path.push_back(vec);
-					return;
-				}
-				path_sum (t->left, k-my_value, vec);
-				path_sum (t->right, k-my_value, vec);
+			vec.push_back(my_value);
+			if (t->left == NULL && t->right == NULL && k-my_value == 0) {
+				(*final_path).push_back(vec);
+				return final_path;
 			}
-			else {
-				return;
-			}
+			path_sum (t->left, k-my_value, vec, final_path);
+			path_sum (t->right, k-my_value, vec, final_path);
+
+			return {};
 		}
 
 		vector<vector<int>> result (int k) {
 			Node* t = root;
-			path_sum(t,k,{});
-			return final_path;
+			vector<vector<int>>* f= new vector<vector<int>>();
+			path_sum(t,k,{},f);
+			return *f;
 		}
 };
 
