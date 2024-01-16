@@ -77,11 +77,11 @@ class TreeNode {
 			return {};
 		}
 
-		vector<vector<int>> result (int k) {
+		vector<vector<int>>* result (int k) {
 			Node* t = root;
 			vector<vector<int>>* f= new vector<vector<int>>();
 			path_sum(t,k,{},f);
-			return *f;
+			return f;
 		}
 };
 
@@ -95,15 +95,17 @@ int main() {
 	t.add(6);
 
 	int k = 15;
-	vector<vector<int>> paths = t.result(k);
+	vector<vector<int>>* paths = t.result(k);
 
 
-	for (int i = 0; i < paths.size(); i++) {
-		for (int j = 0; j < paths[i].size(); j++) {
-			cout << paths[i][j] << " " ;
+	for (int i = 0; i < (*paths).size(); i++) {
+		for (int j = 0; j < (*paths)[i].size(); j++) {
+			cout << (*paths)[i][j] << " " ;
 		}
 		cout << endl;
 	}
+
+	delete paths;
 
 	return 0;
 }
